@@ -2,31 +2,37 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Slots Game</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         html, body {
             width: 100%;
             height: 100%;
             overflow-x: hidden;
+            touch-action: pan-y;
+            position: fixed;
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding-top: 50px;
+            padding-top: 30px;
             background: linear-gradient(135deg, #252525 0%, #0b0b0b 50%, #252525 100%);
             background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            animation: gradientShift 20s ease infinite;
             min-height: 100vh;
+            overscroll-behavior: none;
         }
 
         @keyframes gradientShift {
@@ -40,95 +46,91 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
             z-index: 1;
+            width: 100%;
+            padding: 0 15px;
+            max-width: 500px;
         }
 
         .balance {
             position: fixed;
-            top: 30px;
-            left: 30px;
+            top: 15px;
+            left: 15px;
             background: rgba(34, 34, 34, 0.95);
-            padding: 15px 30px;
-            border-radius: 20px;
+            padding: 10px 15px;
+            border-radius: 12px;
             color: white;
-            font-size: 18px;
+            font-size: 14px;
             font-weight: bold;
             z-index: 100;
             backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .close-site-btn {
             position: fixed;
-            top: 30px;
-            right: 30px;
-            width: 40px;
-            height: 40px;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
             background: rgba(34, 34, 34, 0.95);
             border: none;
             border-radius: 8px;
             color: white;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .close-site-btn:hover {
-            transform: scale(1.1);
-            background: rgba(50, 50, 50, 0.95);
-        }
-
-        .close-site-btn:active {
-            transform: scale(0.95);
-        }
-
-        .balance img {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
-        }
-
-        .add-balance-btn {
-            width: 32px;
-            height: 32px;
-            background: white;
-            border: none;
-            border-radius: 8px;
-            color: #222;
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 8px;
-            transition: all 0.3s;
+            transition: transform 0.2s;
+            z-index: 100;
+            backdrop-filter: blur(10px);
         }
 
-        .add-balance-btn:hover {
-            transform: scale(1.1);
+        .close-site-btn:active {
+            transform: scale(0.9);
+        }
+
+        .balance img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .add-balance-btn {
+            width: 28px;
+            height: 28px;
+            background: white;
+            border: none;
+            border-radius: 6px;
+            color: #222;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 6px;
+            transition: transform 0.2s;
         }
 
         .add-balance-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.9);
         }
 
         .slot-machine-wrapper {
             position: relative;
-            width: 500px;
-            height: 550px;
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 500/550;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-top: 50px;
         }
 
         .machine-bg {
@@ -137,6 +139,7 @@
             height: 100%;
             object-fit: contain;
             left: 5px;
+            pointer-events: none;
         }
 
         .background-window {
@@ -144,20 +147,18 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: calc(100% + 80px);
+            height: 100%;
             background: rgba(8, 8, 8, 0.6);
             z-index: -1;
-            border-radius: 0;
-            box-shadow: none;
         }
 
         .slots-container {
             position: absolute;
             display: flex;
-            gap: 22px;
-            width: 340px;
+            gap: 4%;
+            width: 68%;
             top: 50%;
-            left: calc(50% - 17px);
+            left: 47%;
             transform: translate(-50%, -50%);
             z-index: 10;
         }
@@ -166,19 +167,19 @@
             flex: 1;
             aspect-ratio: 1;
             background: #222222;
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .slot::after {
             content: '';
             position: absolute;
-            right: -11px;
+            right: -2%;
             top: 10%;
             bottom: 10%;
             width: 1px;
@@ -191,96 +192,92 @@
         }
 
         .slot img {
-            width: 85%;
-            height: 85%;
+            width: 80%;
+            height: 80%;
             object-fit: contain;
-            transition: opacity 0.1s ease;
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6))
-                    drop-shadow(0 0 35px rgba(100, 181, 239, 0.5))
-                    drop-shadow(0 0 50px rgba(100, 181, 239, 0.3));
-            animation: glow 2s ease-in-out infinite alternate;
+            will-change: transform;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))
+                    drop-shadow(0 0 25px rgba(100, 181, 239, 0.4));
+        }
+
+        .slot img.spinning {
+            animation: none;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
         }
 
         @keyframes glow {
             0% {
-                filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6))
-                        drop-shadow(0 0 35px rgba(100, 181, 239, 0.5))
-                        drop-shadow(0 0 50px rgba(100, 181, 239, 0.3));
+                filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))
+                        drop-shadow(0 0 25px rgba(100, 181, 239, 0.4));
             }
             100% {
-                filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.8))
-                        drop-shadow(0 0 45px rgba(100, 181, 239, 0.7))
-                        drop-shadow(0 0 60px rgba(100, 181, 239, 0.5));
+                filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.7))
+                        drop-shadow(0 0 35px rgba(100, 181, 239, 0.6));
             }
         }
 
+        .slot img:not(.spinning) {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
         .spin-btn {
-            width: 476px;
+            width: 100%;
+            max-width: 400px;
             padding: 16px 20px;
             background: linear-gradient(180deg, #f58b11 0%, #ffce1c 100%);
             border: none;
             border-radius: 12px;
             color: white;
-            font-size: 17px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            font-size: 16px;
             font-weight: 600;
             letter-spacing: 0.3px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: transform 0.2s;
             box-shadow: 0 4px 12px rgba(245, 139, 17, 0.35);
-            margin-top: -10px;
             position: relative;
             z-index: 10;
+            touch-action: manipulation;
         }
 
-        .spin-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(245, 139, 17, 0.45);
-        }
-
-        .spin-btn:active {
-            transform: translateY(0);
+        .spin-btn:active:not(:disabled) {
+            transform: scale(0.98);
         }
 
         .spin-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none;
         }
 
         .bottom-panel {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 450px;
+            width: 100%;
+            max-width: 400px;
             background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 16px;
+            padding: 20px;
             z-index: 5;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-            margin-top: 30px;
+            margin-top: 10px;
+            margin-bottom: 20px;
         }
 
         .panel-image {
             width: 100%;
-            max-width: 200px;
+            max-width: 180px;
             height: auto;
-            margin: 0 auto 25px;
+            margin: 0 auto 20px;
             display: block;
         }
 
         .promo-input {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             background: #222;
             border: 2px solid #333;
-            border-radius: 15px;
+            border-radius: 12px;
             color: white;
-            font-size: 16px;
-            margin-bottom: 15px;
-            transition: all 0.3s;
+            font-size: 15px;
+            margin-bottom: 12px;
+            transition: border-color 0.3s;
         }
 
         .promo-input::placeholder {
@@ -295,35 +292,27 @@
 
         .panel-btn {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             background: linear-gradient(180deg, #ac610c 0%, #b39014 100%);
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             color: white;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 12px;
+            transition: transform 0.2s;
+            margin-bottom: 10px;
             box-shadow: 0 4px 12px rgba(172, 97, 12, 0.35);
-        }
-
-        .panel-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(172, 97, 12, 0.45);
+            touch-action: manipulation;
         }
 
         .panel-btn:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
         .panel-btn.secondary {
             background: #222;
             box-shadow: none;
-        }
-
-        .panel-btn.secondary:hover {
-            background: #333;
         }
 
         .overlay {
@@ -347,16 +336,17 @@
             bottom: -100%;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%;
+            width: 92%;
             max-width: 450px;
             background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
-            border-radius: 35px 35px 0 0;
+            border-radius: 30px 30px 0 0;
             padding: 0;
             z-index: 1000;
-            transition: bottom 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: bottom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
-            max-height: 90vh;
+            max-height: 85vh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .modal.active {
@@ -364,81 +354,79 @@
         }
 
         .modal-header {
-            padding: 20px 25px 10px;
+            padding: 15px 20px 8px;
             text-align: center;
             border-bottom: 1px solid #222;
-            position: relative;
+            position: sticky;
+            top: 0;
+            background: #1a1a1a;
+            z-index: 10;
         }
 
         .close-btn {
             position: absolute;
-            top: 20px;
-            right: 25px;
-            width: 32px;
-            height: 32px;
+            top: 15px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
             background: #222;
             border: none;
             border-radius: 50%;
             color: white;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: transform 0.2s;
             z-index: 10;
         }
 
-        .close-btn:hover {
-            background: #333;
-            transform: scale(1.1);
-        }
-
         .close-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.9);
         }
 
         .iphone-notch {
-            width: 120px;
-            height: 5px;
+            width: 100px;
+            height: 4px;
             background: white;
-            border-radius: 5px;
-            margin: 12px auto;
+            border-radius: 4px;
+            margin: 10px auto;
         }
 
         .modal-content {
             color: white;
-            padding: 25px;
+            padding: 20px;
         }
 
         .modal-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 10px;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-size: 13px;
             color: #aaa;
             font-weight: 500;
         }
 
         .input-group input {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             background: #222;
             border: 2px solid #333;
-            border-radius: 15px;
+            border-radius: 12px;
             color: white;
-            font-size: 16px;
-            transition: all 0.3s;
+            font-size: 15px;
+            transition: border-color 0.3s;
         }
 
         .input-group input::placeholder {
@@ -453,25 +441,22 @@
 
         .bet-options {
             display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .bet-option {
             flex: 1;
-            padding: 15px;
+            padding: 14px;
             background: #222;
             border: 2px solid #333;
-            border-radius: 15px;
+            border-radius: 12px;
             color: white;
             cursor: pointer;
             text-align: center;
             font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .bet-option:hover {
-            border-color: #64b5ef;
+            transition: all 0.2s;
+            touch-action: manipulation;
         }
 
         .bet-option.active {
@@ -482,11 +467,11 @@
 
         .inventory {
             background: #222;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
             text-align: center;
-            min-height: 160px;
+            min-height: 140px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -503,7 +488,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .gift-item {
@@ -511,57 +496,54 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            transition: all 0.3s;
-            padding: 12px;
-            border-radius: 15px;
+            transition: transform 0.2s;
+            padding: 10px;
+            border-radius: 12px;
             border: 2px solid transparent;
+            touch-action: manipulation;
         }
 
-        .gift-item:hover {
-            transform: scale(1.08);
+        .gift-item:active {
+            transform: scale(0.95);
         }
 
         .gift-item.selected {
             border-color: #64b5ef;
             background: rgba(100, 181, 239, 0.2);
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
 
         .gift-item img {
-            width: 75px;
-            height: 75px;
+            width: 65px;
+            height: 65px;
             object-fit: contain;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .gift-price {
             color: #64b5ef;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
         }
 
         .modal-btn {
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             background: linear-gradient(180deg, #64b5ef 0%, #2a8fd4 100%);
             border: none;
             border-radius: 12px;
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 20px;
+            transition: transform 0.2s;
+            margin-top: 15px;
             box-shadow: 0 4px 12px rgba(42, 143, 212, 0.35);
-        }
-
-        .modal-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(42, 143, 212, 0.45);
+            touch-action: manipulation;
         }
 
         .modal-btn:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
         .result-modal {
@@ -569,15 +551,15 @@
         }
 
         .result-gif {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
         }
 
         .result-amount {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: bold;
-            margin: 20px 0 30px;
+            margin: 15px 0 25px;
         }
 
         .result-amount.win {
@@ -590,20 +572,22 @@
 
         .deposit-option {
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             background: #222;
             border: 2px solid #333;
-            border-radius: 15px;
+            border-radius: 12px;
             color: white;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 15px;
+            transition: all 0.2s;
+            margin-bottom: 12px;
             text-align: center;
+            touch-action: manipulation;
         }
 
-        .deposit-option:hover {
+        .deposit-option:active {
+            transform: scale(0.98);
             border-color: #64b5ef;
             background: rgba(100, 181, 239, 0.1);
         }
@@ -611,34 +595,46 @@
         .withdraw-info {
             color: #aaa;
             font-size: 13px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             line-height: 1.6;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 480px) {
+            body {
+                padding-top: 20px;
+            }
+
             .slot-machine-wrapper {
-                width: 100%;
-                height: auto;
-                max-width: 400px;
+                margin-top: 40px;
             }
 
-            .slots-container {
-                width: 80%;
-                max-width: 300px;
+            .balance {
+                font-size: 13px;
+                padding: 8px 12px;
             }
 
-            .spin-btn {
-                width: 80%;
-                max-width: 300px;
+            .balance img {
+                width: 18px;
+                height: 18px;
             }
 
             .modal {
-                width: 95%;
-                max-width: 400px;
+                width: 96%;
+                border-radius: 25px 25px 0 0;
+            }
+
+            .modal-content {
+                padding: 15px;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .slot-machine-wrapper {
+                margin-top: 30px;
             }
 
             .bottom-panel {
-                width: 95%;
+                margin-top: 5px;
             }
         }
     </style>
@@ -670,14 +666,14 @@
             </div>
         </div>
         <button class="spin-btn" id="spinBtn">SPIN</button>
-    </div>
 
-    <div class="bottom-panel">
-        <img src="https://i.postimg.cc/DzvjKJRg/sdfvvd.png" alt="Panel" class="panel-image">
-        <input type="text" class="promo-input" id="bottomPromoCode" placeholder="Введите промокод">
-        <button class="panel-btn" id="depositBtn">Пополнить</button>
-        <button class="panel-btn" id="withdrawBtn">Вывод</button>
-        <button class="panel-btn secondary" id="supportBtn">Тех. Поддержка</button>
+        <div class="bottom-panel">
+            <img src="https://i.postimg.cc/DzvjKJRg/sdfvvd.png" alt="Panel" class="panel-image">
+            <input type="text" class="promo-input" id="bottomPromoCode" placeholder="Введите промокод">
+            <button class="panel-btn" id="depositBtn">Пополнить</button>
+            <button class="panel-btn" id="withdrawBtn">Вывод</button>
+            <button class="panel-btn secondary" id="supportBtn">Тех. Поддержка</button>
+        </div>
     </div>
 
     <div class="overlay" id="overlay"></div>
@@ -976,11 +972,13 @@
         function openModal(modal) {
             overlay.classList.add('active');
             modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal(modal) {
             overlay.classList.remove('active');
             modal.classList.remove('active');
+            document.body.style.overflow = '';
         }
 
         function updateBalance() {
@@ -1044,36 +1042,45 @@
                 document.getElementById('slot3')
             ];
 
-            const totalDuration = 6000;
-            const startTime = Date.now();
+            const slotImgs = slots.map(slot => slot.querySelector('img'));
+            slotImgs.forEach(img => img.classList.add('spinning'));
 
-            const spinInterval = setInterval(() => {
+            const totalDuration = 4000;
+            const startTime = Date.now();
+            let lastUpdate = 0;
+
+            function spin() {
                 const elapsed = Date.now() - startTime;
                 const progress = elapsed / totalDuration;
 
                 let interval;
                 if (progress < 0.33) {
-                    interval = 50;
+                    interval = 80;
                 } else if (progress < 0.66) {
-                    interval = 100;
+                    interval = 150;
                 } else if (progress < 0.9) {
-                    interval = 200;
+                    interval = 250;
                 } else {
-                    interval = 400;
+                    interval = 450;
                 }
 
-                if (elapsed % interval < 50) {
+                if (elapsed - lastUpdate >= interval) {
+                    lastUpdate = elapsed;
                     slots.forEach(slot => {
                         const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
                         slot.querySelector('img').src = randomSymbol;
                     });
                 }
 
-                if (elapsed >= totalDuration) {
-                    clearInterval(spinInterval);
+                if (elapsed < totalDuration) {
+                    requestAnimationFrame(spin);
+                } else {
+                    slotImgs.forEach(img => img.classList.remove('spinning'));
                     finishSpin(slots, betAmount);
                 }
-            }, 50);
+            }
+
+            requestAnimationFrame(spin);
         }
 
         function finishSpin(slots, betAmount) {
