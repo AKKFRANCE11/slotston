@@ -794,6 +794,43 @@
         const withdrawAmountInput = document.getElementById('withdrawAmount');
         const roundedBg = document.getElementById('roundedBg');
 
+        // Функции для сохранения и загрузки данных
+        function saveGameData() {
+            const gameData = {
+                balance: balance,
+                inventory: inventory
+            };
+            localStorage.setItem('slotsGameData', JSON.stringify(gameData));
+        }
+
+        function loadGameData() {
+            try {
+                const savedData = localStorage.getItem('slotsGameData');
+                if (savedData) {
+                    const gameData = JSON.parse(savedData);
+                    balance = gameData.balance || 0.10;
+                    inventory = gameData.inventory || [];
+                } else {
+                    // Если данных нет, устанавливаем значения по умолчанию
+                    balance = 0.10;
+                    inventory = [];
+                }
+            } catch (error) {
+                console.error('Ошибка при загрузке данных из localStorage:', error);
+                // В случае ошибки используем значения по умолчанию
+                balance = 0.10;
+                inventory = [];
+            }
+        }
+
+        // Загружаем данные при загрузке страницы
+        window.addEventListener('load', function() {
+            loadGameData();
+            updateBalance();
+            updateInventory();
+            updateRoundedBackground();
+        });
+
         function updateRoundedBackground() {
             const slotMachineWrapper = document.querySelector('.slot-machine-wrapper');
             const spinButton = document.getElementById('spinBtn');
@@ -808,7 +845,6 @@
             roundedBg.style.height = `${height}px`;
         }
 
-        window.addEventListener('load', updateRoundedBackground);
         window.addEventListener('resize', updateRoundedBackground);
 
         addBalanceBtn.addEventListener('click', () => {
@@ -849,6 +885,7 @@
             }
             balance -= total;
             updateBalance();
+            saveGameData(); // Сохраняем данные после изменения баланса
             alert(`Вывод на сумму ${amount.toFixed(2)} TON (комиссия ${fee.toFixed(2)} TON) оформлен`);
             withdrawAmountInput.value = '';
             closeModal(withdrawModal);
@@ -916,6 +953,7 @@
 
                     inventory.push({ value: tonAmount, image: giftImg });
                     updateInventory();
+                    saveGameData(); // Сохраняем данные после добавления подарка
                     input.value = '';
                 }
             } else if (code.endsWith('TN')) {
@@ -929,6 +967,7 @@
 
                     inventory.push({ value: tonAmount, image: giftImg });
                     updateInventory();
+                    saveGameData(); // Сохраняем данные после добавления подарка
                     input.value = '';
                 }
             }
@@ -968,6 +1007,7 @@
 
             updateBalance();
             updateInventory();
+            saveGameData(); // Сохраняем данные после ставки
             closeModal(betModal);
             startSpin(betAmount);
         });
@@ -1123,6 +1163,7 @@
             if (winAmount > 0) {
                 balance += winAmount;
                 updateBalance();
+                saveGameData(); // Сохраняем данные после выигрыша
                 resultAmountEl.className = 'result-amount win';
 
                 setTimeout(() => {
@@ -1143,8 +1184,9 @@
             }
         }
 
-        updateBalance();
-        updateInventory();
+        // Не нужно вызывать эти функции здесь, так как они будут вызваны в window.addEventListener('load')
+        // updateBalance();
+        // updateInventory();
     </script>
 </body>
 </html>
